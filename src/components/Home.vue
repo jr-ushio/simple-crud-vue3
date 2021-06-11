@@ -48,10 +48,9 @@
                 <Button type="button" label="REGISTRAR"  @click="registrar()"></Button>
             </span>
             <DataTable :value="usuarios" :paginator="true" :rows="20">
-                <Column field="nombres" header="Nombres"></Column>
-                <Column field="apellidos" header="Apellidos"></Column>
-                <Column field="usuario" header="Usuario"></Column>
-                <Column :rowEditor="true" style="width: 10%; min-width:8rem" bodyStyle="text-align:center"></Column>
+                <Column bodyStyle="text-align: center; overflow: visible" field="nombres" header="Nombres"></Column>
+                <Column bodyStyle="text-align: center; overflow: visible" field="apellidos" header="Apellidos"></Column>
+                <Column bodyStyle="text-align: center; overflow: visible" field="usuario" header="Usuario"></Column>
                 <Column header="Acciones" bodyStyle="text-align: center; overflow: visible">
                     <template #body>
                         <Button type="button" label="EDITAR" class="p-button-success"  @click="editar()"></Button>
