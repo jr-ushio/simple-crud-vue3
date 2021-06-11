@@ -54,10 +54,13 @@ export default {
   },
   methods: {
     regiter() {
+      this.mensaje = ''
       authService.register(this.nombres, this.apellidos, this.usuario,this.password)
           .then(resp => {
             if (resp.data.codigo === 200) {
               router.push('/')
+            } else {
+              this.mensaje = resp.data.mensaje
             }
           })
     }

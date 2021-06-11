@@ -19,7 +19,7 @@
               <input type="text" class="form-control" v-model="usuario"/>
             </div>
             <div class="form-group">
-              <label>Password</label>
+              <label>Password (Opcional)</label>
               <input
                   type="password"
                   class="form-control" v-model="password"/>
@@ -39,7 +39,8 @@ import router from "../@helpers/router";
 import {usuarioService} from "../@services/usuario";
 
 export default {
-  props: {},
+  name: 'Edit',
+  props: ['id'],
   data() {
     return {
       mensaje: '',
@@ -49,9 +50,19 @@ export default {
       password: ''
     }
   },
+  mounted() {
+    usuarioService.show(this.id)
+    .then(resp => {
+      if (resp.data.codigo === 200) {
+        this.nombres = resp.data.data.nombres
+        this.apellidos = resp.data.data.apellidos
+        this.usuario = resp.data.data.usuario
+      }
+    })
+  },
   methods: {
     update() {
-      usuarioService.update(this.nombres, this.apellidos, this.usuario,this.password)
+      usuarioService.update(this.id, this.nombres, this.apellidos, this.usuario,this.password)
           .then(resp => {
             if (resp.data.codigo === 200) {
               router.push('/')

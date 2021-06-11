@@ -3,9 +3,12 @@
     <h3 class="card-header text-center font-weight-bold text-uppercase py-4">USUARIOS</h3>
     <div class="card-body">
       <div id="table" class="table-editable">
-        <span class="table-add float-right mb-3 mr-2">
-          <a class="btn btn-primary" href="/register">REGISTRAR</a>
-        </span>
+        <div class="row mb-2">
+          <div class="col-sm-9"></div>
+          <div class="col-sm-3">
+            <a class="btn btn-primary" href="/register">REGISTRAR</a>
+          </div>
+        </div>
         <table class="table table-bordered table-responsive-md table-striped text-center">
           <thead>
           <tr>
@@ -27,7 +30,7 @@
               <span>{{ usuario.usuario }}</span>
             </td>
             <td>
-              <button class="btn btn-success m-1" type="button" @click="editar">Editar</button>
+              <button class="btn btn-success m-1" type="button" @click="editar(usuario.id)">Editar</button>
               <button class="btn btn-danger m-1" type="button" @click="eliminar">Eliminar</button>
             </td>
           </tr>
@@ -49,8 +52,10 @@
 <script>
 
 import {usuarioService} from "../@services/usuario";
+import router from "../@helpers/router";
 
 export default {
+  name: 'Home',
   props: {},
   data() {
     return {
@@ -69,8 +74,10 @@ export default {
             }
           })
     },
-    editar() {
-
+    editar(id) {
+      router.push({
+        path: `/edit/${id}`,
+      })
     },
     eliminar() {
 

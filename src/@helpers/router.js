@@ -18,13 +18,14 @@ const routes = [
   },
   {
     path: '/',
-    name: 'home',
+    name: 'Home',
     component: Home
   },
   {
-    path: '/edit',
-    name: 'edit',
-    component: Edit
+    path: '/edit/:id',
+    name: 'Edit',
+    component: Edit,
+    props: true
   }
 ]
 

@@ -62,10 +62,13 @@ export default {
   },
   methods: {
     login() {
+      this.mensaje = ''
       authService.login(this.usuario,this.password)
           .then(resp => {
             if (resp.data.codigo === 200) {
               router.push('/')
+            } else {
+              this.mensaje = resp.data.mensaje
             }
           })
     }
