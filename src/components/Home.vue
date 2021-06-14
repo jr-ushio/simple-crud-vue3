@@ -31,17 +31,26 @@
             </td>
             <td>
               <button class="btn btn-success m-1" type="button" @click="editar(usuario.id)">Editar</button>
-              <button class="btn btn-danger m-1" type="button" @click="eliminar">Eliminar</button>
+              <button class="btn btn-danger m-1" type="button" @click="eliminar(usuario.id)">Eliminar</button>
             </td>
           </tr>
           </tbody>
         </table>
-        <!--        <Pagination-->
-        <!--            totalResults={50} // falta modificar para muchos resultados-->
-        <!--        currentPage={currentPage}-->
-        <!--        pageSize={pageSize}-->
-        <!--        paginate={paginate}-->
-        <!--        />-->
+
+        <nav aria-label="pagination">
+          <ul class="pagination justify-content-center">
+            <li class="page-item">
+              <a class="page-link" @click="changePage(page-1)">Anterior</a>
+            </li>
+            <li class="page-item active">
+              <a class="page-link" >{{page}} <span class="sr-only"></span></a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" @click="changePage(page+1)">Siguiente</a>
+            </li>
+          </ul>
+        </nav>
+
         <div>
         </div>
       </div>
@@ -61,6 +70,8 @@ export default {
     return {
       router,
       usuarios: [],
+      page: 1,
+      pages: 1
     }
   },
   created() {
@@ -68,21 +79,50 @@ export default {
   },
   methods: {
     listar() {
-      usuarioService.listar()
-          .then(resp => {
-            if (resp.data.codigo === 200) {
-              this.usuarios = resp.data.data.data
-            }
-          })
+      if(this.page>=1 && this.page<=this.pages){
+        console.log("page",this.page)
+        usuarioService.listar(this.page,20)
+            .then(resp => {
+              this.pages=resp.data.data.lastPage
+
+
+              if (resp.data.codigo === 200) {
+                this.usuarios = resp.data.data.data
+              }
+              console.log("resp",resp.data.data)
+            })
+      }
     },
     editar(id) {
       router.push({
         path: `/edit/${id}`,
       })
     },
-    eliminar() {
-
+    eliminar(id) {
+      usuarioService.eliminar(id)
+      .then(resp => {
+        console.log('resp ', resp.data);
+        if (resp.data.codigo === 200) {
+          this.listar();
+        }
+      })
+    },
+    changePage(page){
+      console.log("pageChange",page);
+      if(page>=1 && page<=this.pages){
+        this.page=page;
+      }else{
+        if(page<=0){
+          this.page=1;
+        }
+        if(page>=this.pages){
+          this.page=this.pages;
+        }
+      }
+      this.listar();
+      
     }
   }
+
 }
 </script>
