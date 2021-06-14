@@ -6,7 +6,7 @@
         <div class="row mb-2">
           <div class="col-sm-9"></div>
           <div class="col-sm-3">
-            <a class="btn btn-primary" href="/register">REGISTRAR</a>
+            <a class="btn btn-primary" @click="router.push('/register')">REGISTRAR</a>
           </div>
         </div>
         <table class="table table-bordered table-responsive-md table-striped text-center">
@@ -59,6 +59,7 @@ export default {
   props: {},
   data() {
     return {
+      router,
       usuarios: [],
     }
   },

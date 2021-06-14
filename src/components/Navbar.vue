@@ -17,15 +17,15 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
           <ul class="navbar-nav me-auto">
             <li class="nav-item active">
-              <a class="nav-link btn btn-link" href="/">Home</a>
+              <a class="nav-link btn btn-link" @click="router.push('/')">Home</a>
             </li>
           </ul>
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link btn btn-link" href="/login">Login</a>
+              <a class="nav-link btn btn-link" @click="router.push('/login')">Login</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link btn btn-link" href="/register">Register</a>
+              <a class="nav-link btn btn-link" @click="router.push('/register')">Register</a>
             </li>
           </ul>
         </div>
@@ -34,12 +34,14 @@
 </template>
 
 <script>
+import router from "../@helpers/router";
 
 export default {
   name: 'Navbar',
   props: {},
   data() {
     return {
+      router
     }
   },
   methods: {

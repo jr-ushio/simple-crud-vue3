@@ -42,6 +42,7 @@ import {authService} from "../@services/auth";
 import router from "../@helpers/router";
 
 export default {
+  name: 'Register',
   props: {},
   data() {
     return {

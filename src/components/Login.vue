@@ -49,7 +49,7 @@ import { authService } from "../@services/auth";
 import router from "../@helpers/router";
 
 export default {
-  name: 'login',
+  name: 'Login',
   props: {
     msg: String
   },
