@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import {authService} from "../@services/auth";
 
-import { ref, defineAsyncComponent } from "vue";
+import { defineAsyncComponent } from "vue";
+import Home from "../components/Home.vue";
 const AsyncEdit = defineAsyncComponent({
   loader: () => import("../components/Edit.vue" /* webpackChunckName: "Edit"*/)
 })
@@ -10,9 +11,6 @@ const AsyncLogin = defineAsyncComponent({
 })
 const AsyncRegister = defineAsyncComponent({
   loader: () => import("../components/Regiter.vue" /* webpackChunckName: "Register"*/)
-})
-const AsyncHome = defineAsyncComponent({
-  loader: () => import("../components/Home.vue" /* webpackChunckName: "Home"*/)
 })
 
 const routes = [
@@ -29,7 +27,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: AsyncHome
+    component: Home
   },
   {
     path: '/edit/:id',

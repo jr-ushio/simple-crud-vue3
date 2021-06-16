@@ -19,7 +19,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(usuario, index) in usuarios" :key="usuario.id">
+          <tr v-for="(usuario) in usuarios" :key="usuario.id">
             <td>
               <span>{{ usuario.nombres }}</span>
             </td>
@@ -120,7 +120,6 @@ export default {
         }
       }
       this.listar();
-      
     }
   }
 
