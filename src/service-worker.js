@@ -47,12 +47,19 @@ workbox.routing.registerRoute(navigationRoute);
     'http://llega-ya.com/apitest/login', // Change to match your endpoint URL.
     async ({event, url}) => {
       const request = event.request;
-      if (true) {
+      if (false) {
         return new Response(JSON.stringify({"mensaje":"DEL SERVICE WORKER.","codigo":404,"data":null}), {
           headers: { 'Content-Type': 'text/json' }
         });
       } else {
-        return fetch(request.clone())
+        var req = new Request('http://llega-cambiado.com/apitest/login', {
+          method: request.method,
+          headers: request.headers,
+          // mode: 'same-origin', // need to set this properly
+          credentials: request.credentials,
+          // redirect: 'manual'   // let browser handle redirects
+        });
+        return fetch(req)
       }
     },
     'POST' // Opt-in to matching POST requests. Only GET is matched by default.
