@@ -1,4 +1,4 @@
-importScripts('/workbox-v6.1.5/workbox-sw.js');
+importScripts('/workbox-sw.js'); // workbox-v6.1.5
 importScripts('/indexeddb-min.js');
 
 workbox.loadModule('workbox-strategies');
@@ -13,9 +13,8 @@ workbox.routing.registerRoute(navigationRoute);
 (async () => {
   const myDB = await idb.openDB('SmartClicDB', 1);
 
-  myDB.get('response', 1).then(resp => {
-    console.log('resp ', resp);
-  })
+  // let data = await myDB.get('response', 1)
+  // console.log('data ', data);
 
   workbox.routing.registerRoute(
     'http://llega-ya.com/apitest/login', // Change to match your endpoint URL.
