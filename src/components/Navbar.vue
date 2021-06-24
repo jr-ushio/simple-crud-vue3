@@ -22,8 +22,8 @@
           </ul>
           <ul class="navbar-nav me-auto">
             <li class="nav-item active">
-              <a class="nav-link btn btn-link" v-if="modoOnline" @click="cambiarModoOnline(false)">Online</a>
-              <a class="nav-link btn btn-link" v-if="!modoOnline" @click="cambiarModoOnline(true)">Offline</a>
+              <a class="nav-link btn btn-link" v-if="modoOffline" @click="cambiarModoOnline(false)">Offline</a>
+              <a class="nav-link btn btn-link" v-if="!modoOffline" @click="cambiarModoOnline(true)">Online</a>
             </li>
           </ul>
           <ul class="navbar-nav">
@@ -50,7 +50,7 @@ export default {
     return {
       router,
       db: null,
-      modoOnline: true
+      modoOffline: false
     }
   },
   mounted() {
@@ -78,7 +78,7 @@ export default {
     async obtenerModoOnline() {
       const value = await this.db.get('offline', 1);
       if (value) {
-        this.modoOnline = value.status
+        this.modoOffline = value.status
       }
     }
   }

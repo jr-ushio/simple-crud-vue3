@@ -48,7 +48,7 @@ workbox.routing.registerRoute(navigationRoute);
     async ({event, url}) => {
       const request = event.request;
       const value = await myDB.get('offline', 1);
-      if (!value || value.status) {
+      if (!value || !value.status) {
         // return new Response(JSON.stringify({"mensaje":"DEL SERVICE WORKER.","codigo":404,"data":null}), {
         //   headers: { 'Content-Type': 'text/json' }
         // });
