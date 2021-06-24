@@ -20,6 +20,12 @@
               <a class="nav-link btn btn-link" @click="router.push('/')">Home</a>
             </li>
           </ul>
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item active">
+              <a class="nav-link btn btn-link" v-if="modoOnline" @click="cambiarModoOnline(false)">Online</a>
+              <a class="nav-link btn btn-link" v-if="!modoOnline" @click="cambiarModoOnline(true)">Offline</a>
+            </li>
+          </ul>
           <ul class="navbar-nav">
             <li class="nav-item">
               <a class="nav-link btn btn-link" @click="router.push('/login')">Login</a>
@@ -35,16 +41,46 @@
 
 <script>
 import router from "../@helpers/router";
+import { openDB } from 'idb';
 
 export default {
   name: 'Navbar',
   props: {},
   data() {
     return {
-      router
+      router,
+      db: null,
+      modoOnline: true
     }
   },
+  mounted() {
+    this.initDB()
+  },
   methods: {
+    async initDB() {
+      this.db = await openDB('SmartClicDB', 1, {
+        upgrade(db) {
+          const store = db.createObjectStore('offline', {
+            keyPath: 'id',
+            // autoIncrement: true,
+          });
+          store.createIndex('status', 'status');
+        },
+      });
+
+      // this.db.add('offline', {id: 1, status: true})
+      this.obtenerModoOnline()
+    },
+    async cambiarModoOnline(estado) {
+      await this.db.put('offline', { id: 1, status: estado})
+      this.obtenerModoOnline()
+    },
+    async obtenerModoOnline() {
+      const value = await this.db.get('offline', 1);
+      if (value) {
+        this.modoOnline = value.status
+      }
+    }
   }
 }
 </script>
