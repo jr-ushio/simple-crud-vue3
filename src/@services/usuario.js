@@ -2,8 +2,8 @@ import axios from 'axios'
 
 const url = 'http://llega-ya.com/apitest/'
 
-function listar(page, limit) {
-  return axios.get(url + 'usuarios' + `?page=${page}&limit=${limit}`)
+function listar(page, limit, search = '') {
+  return axios.get(url + 'usuarios' + `?page=${page}&limit=${limit}&search=${search}`)
 }
 
 function show(id) {

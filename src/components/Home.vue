@@ -4,9 +4,18 @@
     <div class="card-body">
       <div id="table" class="table-editable">
         <div class="row mb-2">
-          <div class="col-sm-9"></div>
-          <div class="col-sm-3">
-            <a class="btn btn-primary" @click="router.push('/register')">REGISTRAR</a>
+          <div class="col-sm-4">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" v-model="search"
+                     v-on:keyup.enter="listar"
+                     placeholder="Buscar nombres/apellidos/usuario"
+                     aria-describedby="button-addon2">
+              <button class="btn btn-outline-secondary" id="button-addon2" @click="listar"><i class="bi bi-search"></i></button>
+            </div>
+          </div>
+          <div class="col-sm-4"></div>
+          <div class="col-sm-4">
+<!--            <a class="btn btn-primary" @click="router.push('/register')">REGISTRAR</a>-->
           </div>
         </div>
         <table class="table table-bordered table-responsive-md table-striped text-center">
@@ -73,7 +82,8 @@ export default {
       usuarios: [],
       page: 1,
       pages: 1,
-      db: null
+      db: null,
+      search: ''
     }
   },
   mounted() {
@@ -103,8 +113,7 @@ export default {
     },
     listar() {
       if(this.page>=1 && this.page<=this.pages){
-        console.log("page",this.page)
-        usuarioService.listar(this.page,20)
+        usuarioService.listar(this.page,20, this.search)
             .then(resp => {
               this.pages=resp.data.data.lastPage
 
