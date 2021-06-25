@@ -62,6 +62,7 @@
 
 import {usuarioService} from "../@services/usuario";
 import router from "../@helpers/router";
+import { openDB } from 'idb';
 
 export default {
   name: 'Home',
@@ -71,13 +72,35 @@ export default {
       router,
       usuarios: [],
       page: 1,
-      pages: 1
+      pages: 1,
+      db: null
     }
+  },
+  mounted() {
+    this.initDB()
   },
   created() {
     this.listar();
   },
   methods: {
+    async initDB() {
+      this.db = await openDB('SmartClicDB', 1)
+      this.db.getAllFromIndex('usuarios', 'id').then(resp => {
+        if (resp.length === 0) {
+          this.guardarDataEnModoOffline();
+        }
+      })
+    },
+    async guardarDataEnModoOffline() {
+      usuarioService.listar(1,9999)
+          .then(resp => {
+            if (resp.data.codigo === 200) {
+              for (let item of resp.data.data.data) {
+                this.db.add('usuarios', item)
+              }
+            }
+          })
+    },
     listar() {
       if(this.page>=1 && this.page<=this.pages){
         console.log("page",this.page)

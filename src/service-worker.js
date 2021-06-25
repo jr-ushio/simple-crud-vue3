@@ -67,4 +67,31 @@ workbox.routing.registerRoute(navigationRoute);
     'POST' // Opt-in to matching POST requests. Only GET is matched by default.
   );
 
+  workbox.routing.registerRoute(
+    /.*\/apitest\/usuarios/, // Change to match your endpoint URL.
+    async ({event, url}) => {
+      const request = event.request;
+      const value = await myDB.get('offline', 1);
+      console.log('service worker');
+      if (!value || !value.status) {
+        return fetch(request.clone())
+      } else {
+        return new Response(JSON.stringify({
+          mensaje: '',
+          data: {
+            data: await myDB.getAllFromIndex('usuarios', 'id'),
+            lastPage: 1,
+            page: 1,
+            perPage: 1000,
+            total: 994
+          },
+          codigo: 200
+        }), {
+          headers: { 'Content-Type': 'text/json' }
+        });
+      }
+    },
+    'GET'
+  );
+
 })();

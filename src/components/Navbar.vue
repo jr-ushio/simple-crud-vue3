@@ -65,6 +65,14 @@ export default {
             // autoIncrement: true,
           });
           store.createIndex('status', 'status');
+
+          const store1 = db.createObjectStore('usuarios', {
+            keyPath: 'id'
+          });
+          store1.createIndex('id', 'id');
+          store1.createIndex('nombres', 'nombres');
+          store1.createIndex('apellidos', 'apellidos');
+          store1.createIndex('usuario', 'usuario');
         },
       });
 
