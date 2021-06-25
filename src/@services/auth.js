@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { BehaviorSubject } from 'rxjs';
 
-const url = 'http://llega-ya.com/apitest/'
+const url = 'https://llega-ya.com/apitest/'
 const user = 'usuario'
 const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem(user)));
 
