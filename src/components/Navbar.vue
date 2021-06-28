@@ -1,7 +1,8 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-        <a class="navbar-brand" @click="router.push('/')">Vue 3</a>
+        <!--<a class="navbar-brand" @click="router.push('/')">Vue 3</a>-->
+        <a class="navbar-brand" href="/">Vue 3</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -9,15 +10,18 @@
         <div class="collapse navbar-collapse" id="navbarText">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <a class="nav-link btn btn-link" @click="router.push('/')">Home</a>
+              <!--<a class="nav-link btn btn-link" @click="router.push('/')">Home</a>-->
+              <a class="nav-link btn btn-link" href="/">Home</a>
             </li>
           </ul>
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link btn btn-link" @click="router.push('/login')">Login</a>
+              <!--<a class="nav-link btn btn-link" @click="router.push('/login')">Login</a>-->
+              <a class="nav-link btn btn-link" href="/login">Login</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link btn btn-link" @click="router.push('/register')">Register</a>
+              <!--<a class="nav-link btn btn-link" @click="router.push('/register')">Register</a>-->
+              <a class="nav-link btn btn-link" href="/register">Register</a>
             </li>
           </ul>
         </div>
@@ -32,7 +36,6 @@
 <script>
 import router from "../@helpers/router";
 import { openDB } from 'idb';
-
 export default {
   name: 'Navbar',
   props: {},
@@ -55,7 +58,6 @@ export default {
             // autoIncrement: true,
           });
           store.createIndex('status', 'status');
-
           const store1 = db.createObjectStore('usuarios', {
             keyPath: 'id'
           });
@@ -65,7 +67,6 @@ export default {
           store1.createIndex('usuario', 'usuario');
         },
       });
-
       // this.db.add('offline', {id: 1, status: true})
       this.obtenerModoOnline()
     },
