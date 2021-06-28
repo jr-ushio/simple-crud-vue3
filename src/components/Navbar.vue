@@ -1,29 +1,15 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
-        <a class="navbar-brand">Vue 3</a>
-        <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarColor01"
-            aria-controls="navbarColor01"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-        >
+        <a class="navbar-brand" @click="router.push('/')">Vue 3</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarColor01">
+        <div class="collapse navbar-collapse" id="navbarText">
           <ul class="navbar-nav me-auto">
-            <li class="nav-item active">
+            <li class="nav-item">
               <a class="nav-link btn btn-link" @click="router.push('/')">Home</a>
-            </li>
-          </ul>
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item active">
-              <a class="nav-link btn btn-link" v-if="modoOffline" @click="cambiarModoOnline(false)">Offline</a>
-              <a class="nav-link btn btn-link" v-if="!modoOffline" @click="cambiarModoOnline(true)">Online</a>
             </li>
           </ul>
           <ul class="navbar-nav">
@@ -37,6 +23,10 @@
         </div>
     </div>
   </nav>
+  <div>
+    <a class="nav-link btn btn-link" v-if="modoOffline" @click="cambiarModoOnline(false)">Offline</a>
+    <a class="nav-link btn btn-link" v-if="!modoOffline" @click="cambiarModoOnline(true)">Online</a>
+  </div>
 </template>
 
 <script>
