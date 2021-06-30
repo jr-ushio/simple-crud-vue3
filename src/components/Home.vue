@@ -18,7 +18,7 @@
 <!--            <a class="btn btn-primary" @click="router.push('/register')">REGISTRAR</a>-->
           </div>
         </div>
-        <table class="table table-bordered table-responsive-md table-striped text-center">
+        <table class="card-table table table-bordered table-responsive-md table-striped text-center">
           <thead>
           <tr>
             <th class="text-center">Nombre</th>
@@ -157,3 +157,9 @@ export default {
 
 }
 </script>
+
+<style>
+.card-table {
+  word-break: break-all;
+}
+</style>
