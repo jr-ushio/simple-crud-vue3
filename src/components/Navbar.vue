@@ -23,14 +23,74 @@
               <!--<a class="nav-link btn btn-link" @click="router.push('/register')">Register</a>-->
               <a class="nav-link btn btn-link" href="/register">Register</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link btn btn-link" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Historial de sincronización</a>
+            </li>
           </ul>
         </div>
     </div>
   </nav>
+
   <div>
-    <a class="nav-link btn btn-link" v-if="modoOffline" @click="cambiarModoOnline(false)">Offline</a>
+    <a class="nav-link btn btn-link" v-if="modoOffline" @click="cambiarModoOnline(false)"> Offline</a>
     <a class="nav-link btn btn-link" v-if="!modoOffline" @click="cambiarModoOnline(true)">Online</a>
   </div>
+
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Alerta!</strong> Tiene 10 registros que requieren sincronización.
+    <button type="button" class="btn btn-danger" data-bs-dismiss="alert" aria-label="Close" >Sincronizar ahora</button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+      <h5 id="offcanvasRightLabel">Sincronización</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="card">
+        <p class="btn btn-danger">Sincronizar</p>
+          
+        <p class="text-danger"><i class="bi bi-cloud-upload"></i>10 registros sin sincronizar</p>
+        <p class="text-success"><i class="bi bi-house-door-fill"></i>100 registros sincronizados</p>
+        <p class="text-primary"><i class="bi bi-display"></i>110 registros en total</p>
+        <div class="card-body respF">
+            <table class="table table-bordered table-responsive-md table-striped text-center">
+              <thead>
+              <tr>
+                <th class="text-center">N°</th>
+                <th class="text-center">Tipo</th>
+                <th class="text-center">Estado</th>
+                <th class="text-center">Fecha de creación</th>
+                <th class="text-center">Fecha de sincronización</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr >
+                <td>
+                  <span>1</span>
+                </td>
+                <td>
+                  <span>PUT</span>
+                </td>
+                <td>
+                  <span>Sin sincronizar</span>
+                </td>
+                <td>
+                  <span>11/01/21</span>
+                </td>
+                <td>
+                  <span>11/01/21</span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
 </template>
 
 <script>
@@ -84,5 +144,13 @@ export default {
 }
 </script>
 <style>
-
+.respA{
+  display: flex;
+  text-align: center;
+}
+.respF{
+  overflow:auto;
+  width: auto;
+  /*word-break: break-all;*/
+}
 </style>
