@@ -18,49 +18,48 @@
 <!--            <a class="btn btn-primary" @click="router.push('/register')">REGISTRAR</a>-->
           </div>
         </div>
-        <table class="card-table table table-bordered table-responsive-md table-striped text-center">
-          <thead>
-          <tr>
-            <th class="text-center">Nombre</th>
-            <th class="text-center">Apellidos</th>
-            <th class="text-center">Usuario</th>
-            <th class="text-center">Acciones</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="(usuario) in usuarios" :key="usuario.id">
-            <td>
-              <span>{{ usuario.nombres }}</span>
-            </td>
-            <td>
-              <span>{{ usuario.apellidos }}</span>
-            </td>
-            <td>
-              <span>{{ usuario.usuario }}</span>
-            </td>
-            <td>
-              <button class="btn btn-success m-1" type="button" @click="editar(usuario.id)">Editar</button>
-              <button class="btn btn-danger m-1" type="button" @click="eliminar(usuario.id)">Eliminar</button>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-
-        <nav aria-label="pagination">
-          <ul class="pagination justify-content-center">
-            <li class="page-item">
-              <a class="page-link" @click="changePage(page-1)">Anterior</a>
-            </li>
-            <li class="page-item active">
-              <a class="page-link" >{{page}} <span class="sr-only"></span></a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" @click="changePage(page+1)">Siguiente</a>
-            </li>
-          </ul>
-        </nav>
-
-        <div>
+        <div class="respF">
+          <table class="table table-bordered table-responsive-md table-striped text-center">
+            <thead>
+            <tr>
+              <th class="text-center">Nombre</th>
+              <th class="text-center">Apellidos</th>
+              <th class="text-center">Usuario</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(usuario) in usuarios" :key="usuario.id">
+              <td>
+                <span>{{ usuario.nombres }}</span>
+              </td>
+              <td>
+                <span>{{ usuario.apellidos }}</span>
+              </td>
+              <td>
+                <span>{{ usuario.usuario }}</span>
+              </td>
+              <td>
+                <button class="btn btn-success m-1" type="button" @click="editar(usuario.id)">Editar</button>
+                <button class="btn btn-danger m-1" type="button" @click="eliminar(usuario.id)">Eliminar</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        
+          <nav aria-label="pagination">
+            <ul class="pagination justify-content-center">
+              <li class="page-item">
+                <a class="page-link" @click="changePage(page-1)">Anterior</a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" >{{page}} <span class="sr-only"></span></a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" @click="changePage(page+1)">Siguiente</a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
@@ -159,7 +158,9 @@ export default {
 </script>
 
 <style>
-.card-table {
-  word-break: break-all;
+.respF{
+  overflow:auto;
+  width: auto;
+  /*word-break: break-all;*/
 }
 </style>
