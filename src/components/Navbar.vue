@@ -161,7 +161,7 @@ export default {
               }
           })
     },
-
+    //opcional
     listarOperacionesTotales(){
       if(this.page>=1 && this.page<=this.pages){
         offlineService.listarOperacionesTotales(this.page,5, this.search)
