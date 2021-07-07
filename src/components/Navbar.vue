@@ -96,6 +96,7 @@
 <script>
 import router from "../@helpers/router";
 import { openDB } from 'idb';
+import {offlineService} from "../@services/offline";
 export default {
   name: 'Navbar',
   props: {},
@@ -103,7 +104,17 @@ export default {
     return {
       router,
       db: null,
-      modoOffline: false
+      modoOffline: false,
+
+      operaciones: [],
+      operacionesTotales: [],
+      sincronizar: [],
+      page: 1,
+      pages: 1,
+
+      sincronizados: 0,
+      noSincronizados: [],
+      totalRegistros: 0
     }
   },
   mounted() {
@@ -139,7 +150,45 @@ export default {
       if (value) {
         this.modoOffline = value.status
       }
+    },
+    listarOperacionesSincronizar() {
+      offlineService.listarOperacionesSincronizar()
+          .then(resp => {
+            this.totalRegistros=resp.data.data.totalregistros
+
+            if (resp.data.codigo === 200) {
+                this.operaciones = resp.data.data.sincronizar
+              }
+          })
+    },
+    //opcional
+    listarOperacionesTotales(){
+      if(this.page>=1 && this.page<=this.pages){
+        offlineService.listarOperacionesTotales(this.page,5, this.search)
+            .then(resp => {
+              this.pages=resp.data.data.lastPage
+
+
+              if (resp.data.codigo === 200) {
+                this.operacionesTotales = resp.data.data.data
+              }
+              console.log("resp",resp.data.data)
+            })
+      }
+    },
+
+    sincronizarManual(){
+      this.sincronizar=this.operaciones;
+      offlineService.sincronizarManual(this.sincronizar)
+          .then(resp => {
+            this.sincronizados=resp.data.data.sincronizados
+            this.totalRegistros=resp.data.data.totalregistros
+            if (resp.data.codigo === 200) {
+              this.noSincronizados=resp.data.data.nosincronizados
+            }
+      })
     }
+
   }
 }
 </script>
