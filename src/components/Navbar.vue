@@ -24,9 +24,9 @@
             <!--<a class="nav-link btn btn-link" @click="router.push('/register')">Register</a>-->
             <a class="nav-link btn btn-link" href="/register">Register</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="modoOffline">
             <a class="nav-link btn btn-link" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-               aria-controls="offcanvasRight">Historial de sincronización</a>
+               aria-controls="offcanvasRight">Sincronización</a>
           </li>
         </ul>
       </div>
@@ -38,8 +38,8 @@
     <a class="nav-link btn btn-link" v-if="!modoOffline" @click="cambiarModoOnline(true)">Online</a>
   </div>
 
-  <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="operacionesTotales > 0">
-    <strong>Alerta!</strong> Tiene {{ operacionesTotales }} registros que requieren sincronización.
+  <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="modoOffline && sincronizacionesTotales > 0">
+    <strong>Alerta!</strong> Tiene {{ sincronizacionesTotales }} registros que requieren sincronización.
 <!--    <button type="button" class="btn btn-danger" data-bs-dismiss="alert" aria-label="Close">Sincronizar ahora</button>-->
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
@@ -54,39 +54,39 @@
         <button class="btn btn-danger" @click="sincronizarManual()">Sincronizar</button>
 
         <div v-if="operacionesTotales > 0" class="mt-2">
-            <p class="text-danger"><i class="bi bi-cloud-upload"></i>{{ operacionesFallidas.length }} registros sin sincronizar</p>
-            <p class="text-success"><i class="bi bi-house-door-fill"></i>{{ operacionesExitosas.length }} registros sincronizados</p>
-            <p class="text-primary"><i class="bi bi-display"></i>{{ operacionesTotales }} registros en total</p>
-            <hr>
-            <p class="text-danger"><i class="bi bi-cloud-upload"></i>{{ registrosRecuperados.length }} registros recuperados</p>
-            <div class="card-body respF" v-if="operacionesFallidas.length > 0">
-              <table class="table table-bordered table-responsive-md table-striped text-center">
-                <thead>
-                <tr>
-                  <th class="text-center">N°</th>
-                  <th class="text-center">Tipo</th>
-                  <th class="text-center">Estado</th>
-                  <th class="text-center">Fecha de creación</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="operacion in operacionesFallidas" :key="operacion.id">
-                  <td>
-                    <span>{{ operacion.id }}</span>
-                  </td>
-                  <td>
-                    <span>{{ operacion.request_method }}</span>
-                  </td>
-                  <td>
-                    <span>{{ operacion.status }}</span>
-                  </td>
-                  <td>
-                    <span>{{ operacion.date_time }}</span>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
+          <p class="text-danger"><i class="bi bi-cloud-upload"></i>{{ operacionesFallidas.length }} registros sin sincronizar</p>
+          <p class="text-success"><i class="bi bi-house-door-fill"></i>{{ operacionesExitosas.length }} registros sincronizados</p>
+          <p class="text-primary"><i class="bi bi-display"></i>{{ operacionesTotales }} registros en total</p>
+          <hr>
+        </div>
+        <p class="text-danger" v-if="registrosRecuperados.length > 0"><i class="bi bi-cloud-upload"></i>{{ registrosRecuperados.length }} registros recuperados</p>
+        <div class="card-body respF" v-if="operacionesFallidas.length > 0">
+          <table class="table table-bordered table-responsive-md table-striped text-center">
+            <thead>
+            <tr>
+              <th class="text-center">N°</th>
+              <th class="text-center">Tipo</th>
+              <th class="text-center">Estado</th>
+              <th class="text-center">Fecha de creación</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="operacion in operacionesFallidas" :key="operacion.id">
+              <td>
+                <span>{{ operacion.id }}</span>
+              </td>
+              <td>
+                <span>{{ operacion.request_method }}</span>
+              </td>
+              <td>
+                <span>{{ operacion.status }}</span>
+              </td>
+              <td>
+                <span>{{ operacion.date_time }}</span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
         </div>
 
       </div>
@@ -172,6 +172,7 @@ export default {
               this.operacionesFallidas = resp.data.data.operaciones_fallidas
               this.operacionesTotales = resp.data.data.operaciones_totales
             }
+            this.listarOperacionesSincronizar()
           })
     }
 

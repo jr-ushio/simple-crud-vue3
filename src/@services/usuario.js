@@ -1,6 +1,7 @@
 import axios from 'axios'
+import path from "../@helpers/environment";
 
-const url = 'https://llega-ya.com/apitest/'
+const url = path.url_servidor +'/apitest/'
 
 function listar(page, limit, search = '') {
   return axios.get(url + 'usuarios' + `?page=${page}&limit=${limit}&search=${search}`)
