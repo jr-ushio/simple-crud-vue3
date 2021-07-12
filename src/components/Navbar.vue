@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark" :class="{ 'bg-primary': !modoOffline, 'bg-success': modoOffline }">
     <div class="container-fluid">
-      <!--<a class="navbar-brand" @click="router.push('/')">Vue 3</a>-->
+<!--      <a class="navbar-brand" @click="router.push('/')">Vue 3</a>-->
       <a class="navbar-brand" href="/">Vue 3</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
               aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,17 +11,17 @@
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <!--<a class="nav-link btn btn-link" @click="router.push('/')">Home</a>-->
+<!--            <a class="nav-link btn btn-link" @click="router.push('/')">Home</a>-->
             <a class="nav-link btn btn-link" href="/">Home</a>
           </li>
         </ul>
         <ul class="navbar-nav">
           <li class="nav-item">
-            <!--<a class="nav-link btn btn-link" @click="router.push('/login')">Login</a>-->
+<!--            <a class="nav-link btn btn-link" @click="router.push('/login')">Login</a>-->
             <a class="nav-link btn btn-link" href="/login">Login</a>
           </li>
           <li class="nav-item">
-            <!--<a class="nav-link btn btn-link" @click="router.push('/register')">Register</a>-->
+<!--            <a class="nav-link btn btn-link" @click="router.push('/register')">Register</a>-->
             <a class="nav-link btn btn-link" href="/register">Register</a>
           </li>
           <li class="nav-item" v-if="modoOffline">
@@ -53,40 +53,47 @@
       <div class="card">
         <button class="btn btn-danger" @click="sincronizarManual()">Sincronizar</button>
 
-        <div v-if="operacionesTotales > 0" class="mt-2">
-          <p class="text-danger"><i class="bi bi-cloud-upload"></i>{{ operacionesFallidas.length }} registros sin sincronizar</p>
-          <p class="text-success"><i class="bi bi-house-door-fill"></i>{{ operacionesExitosas.length }} registros sincronizados</p>
-          <p class="text-primary"><i class="bi bi-display"></i>{{ operacionesTotales }} registros en total</p>
-          <hr>
+        <div v-if="!spinner">
+          <div v-if="operacionesTotales > 0" class="mt-2">
+            <p class="text-danger"><i class="bi bi-cloud-upload"></i>{{ operacionesFallidas.length }} registros sin sincronizar</p>
+            <p class="text-success"><i class="bi bi-house-door-fill"></i>{{ operacionesExitosas.length }} registros sincronizados</p>
+            <p class="text-primary"><i class="bi bi-display"></i>{{ operacionesTotales }} registros en total</p>
+            <hr>
+          </div>
+          <p class="text-danger" v-if="registrosRecuperados.length > 0"><i class="bi bi-cloud-upload"></i>{{ registrosRecuperados.length }} registros recuperados</p>
+          <div class="card-body respF" v-if="operacionesFallidas.length > 0">
+            <table class="table table-bordered table-responsive-md table-striped text-center">
+              <thead>
+              <tr>
+                <th class="text-center">N°</th>
+                <th class="text-center">Tipo</th>
+                <th class="text-center">Estado</th>
+                <th class="text-center">Fecha de creación</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="operacion in operacionesFallidas" :key="operacion.id">
+                <td>
+                  <span>{{ operacion.id }}</span>
+                </td>
+                <td>
+                  <span>{{ operacion.request_method }}</span>
+                </td>
+                <td>
+                  <span>{{ operacion.status }}</span>
+                </td>
+                <td>
+                  <span>{{ operacion.date_time }}</span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <p class="text-danger" v-if="registrosRecuperados.length > 0"><i class="bi bi-cloud-upload"></i>{{ registrosRecuperados.length }} registros recuperados</p>
-        <div class="card-body respF" v-if="operacionesFallidas.length > 0">
-          <table class="table table-bordered table-responsive-md table-striped text-center">
-            <thead>
-            <tr>
-              <th class="text-center">N°</th>
-              <th class="text-center">Tipo</th>
-              <th class="text-center">Estado</th>
-              <th class="text-center">Fecha de creación</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="operacion in operacionesFallidas" :key="operacion.id">
-              <td>
-                <span>{{ operacion.id }}</span>
-              </td>
-              <td>
-                <span>{{ operacion.request_method }}</span>
-              </td>
-              <td>
-                <span>{{ operacion.status }}</span>
-              </td>
-              <td>
-                <span>{{ operacion.date_time }}</span>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+        <div v-if="spinner" class="d-flex justify-content-center my-2">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
         </div>
 
       </div>
@@ -99,6 +106,7 @@
 import router from "../@helpers/router";
 import {openDB} from 'idb';
 import {offlineService} from "../@services/offline";
+const emitter = require('tiny-emitter/instance');
 
 export default {
   name: 'Navbar',
@@ -108,6 +116,7 @@ export default {
       router,
       db: null,
       modoOffline: false,
+      spinner: false,
 
       sincronizaciones: [],
       sincronizacionesTotales: 0,
@@ -120,7 +129,11 @@ export default {
   },
   mounted() {
     this.initDB()
-    this.listarOperacionesSincronizar()
+    const me = this
+    me.listarOperacionesSincronizar()
+    emitter.on('actualizar', ()=> {
+      me.listarOperacionesSincronizar()
+    });
   },
   methods: {
     async initDB() {
@@ -163,6 +176,7 @@ export default {
           })
     },
     sincronizarManual() {
+      this.spinner = true
       offlineService.sincronizarManual()
           .then(resp => {
             console.log('resp.data ', resp.data);
@@ -173,6 +187,7 @@ export default {
               this.operacionesTotales = resp.data.data.operaciones_totales
             }
             this.listarOperacionesSincronizar()
+            this.spinner = false
           })
     }
 

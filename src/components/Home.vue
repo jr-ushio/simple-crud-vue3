@@ -71,6 +71,7 @@
 import {usuarioService} from "../@services/usuario";
 import router from "../@helpers/router";
 import { openDB } from 'idb';
+const emitter = require('tiny-emitter/instance');
 
 export default {
   name: 'Home',
@@ -86,7 +87,7 @@ export default {
     }
   },
   mounted() {
-    this.initDB()
+    // this.initDB()
   },
   created() {
     this.listar();
@@ -136,6 +137,7 @@ export default {
         if (resp.data.codigo === 200) {
           this.listar();
         }
+        emitter.emit('actualizar');
       })
     },
     changePage(page){

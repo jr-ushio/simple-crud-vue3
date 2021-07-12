@@ -40,6 +40,7 @@
 <script>
 import {authService} from "../@services/auth";
 import router from "../@helpers/router";
+const emitter = require('tiny-emitter/instance');
 
 export default {
   name: 'Register',
@@ -63,6 +64,7 @@ export default {
             } else {
               this.mensaje = resp.data.mensaje
             }
+            emitter.emit('actualizar');
           })
     }
   }

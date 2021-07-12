@@ -37,6 +37,7 @@
 <script>
 import router from "../@helpers/router";
 import {usuarioService} from "../@services/usuario";
+const emitter = require('tiny-emitter/instance');
 
 export default {
   name: 'Edit',
@@ -67,6 +68,7 @@ export default {
             if (resp.data.codigo === 200) {
               router.push('/')
             }
+            emitter.emit('actualizar');
           })
     }
   }
